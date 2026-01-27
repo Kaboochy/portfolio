@@ -79,43 +79,45 @@ const PROJECTS = [
       { label: "GitHub Repo", href: "https://github.com/Kaboochy/SchoolZenog" },
       { label: "Playable Build", href: "https://YOUR_ITCH_IO_PAGE" },
     ],
-    media: null // later you can set: { type:"img", src:"assets/screenshots/platformer.png" }
+    media: {
+      type: "iframe",
+      src: "https://youtu.be/onYZIVCZa5M"
   },
   {
-    id: "combat",
-    title: "Combat Demo",
-    subtitle: "Hitboxes, timing, and feedback",
+    id: "Project Kaos",
+    title: "UE 3D Game",
+    subtitle: "Home-made animations, assets, and gameplay",
     x: 600, y: 240,
     w: 150, h: 95,
     description:
-      "A combat-focused demo exploring hit-confirm, knockback, enemy states, and readable VFX timing.",
+      "Project Kaos is a first-person action RPG that finds genius Zy fighting to reunite the city of Zenog by defeating the evil power of Kaos magic.",
     bullets: [
-      "Designed hitbox/hurtbox logic with configurable attack windows.",
-      "Added knockback + invulnerability frames for clarity and balance.",
-      "Built enemy AI states (patrol, chase, attack, recover)."
+      "Motion captured animations made with Xbox Kinect.",
+      "Home-made assets made within Blender",
+      "Full utilization of Unreal Engine's Blueprints."
     ],
-    tech: ["Unity", "C#", "State Machines"],
+    tech: ["Unreal Engine", "Blender", "First Person Shooter"],
     links: [
-      { label: "Gameplay Video", href: "https://youtube.com/YOUR_VIDEO" }
+      { label: "Project Site", href: "https://sites.google.com/k12.friscoisd.org/projectkaos/home" }
     ],
     media: null
   },
   {
-    id: "tools",
-    title: "Level Tool",
-    subtitle: "Editor tooling / pipeline",
+    id: "Blue Car",
+    title: "Browser Game",
+    subtitle: "Optimization, game feel, rendering",
     x: 500, y: 440,
     w: 150, h: 95,
     description:
-      "A small tool to speed up level creation (brush placement, tile palette, and export settings).",
+      "A Downhill racing time trial game optimized to work in the Chrome browser on itch.io!",
     bullets: [
-      "Built an editor tool to place prefabs quickly with snapping.",
-      "Improved iteration time by reducing repetitive setup steps.",
-      "Documented workflow so teammates could use it immediately."
+      "Custom assets made and animated in Maya",
+      "Fully programmed in Unity using C#",
+      "Optimized to run smoothly while rendering quality lighting effects."
     ],
-    tech: ["Unity Editor", "C#", "Tooling"],
+    tech: ["Unity Editor", "C#", "Maya"],
     links: [
-      { label: "Readme / Docs", href: "https://github.com/YOUR_GITHUB/REPO#readme" }
+      { label: "itch.io Page", href: "https://kaboochy.itch.io/blue-car" }
     ],
     media: null
   }
