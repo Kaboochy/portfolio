@@ -59,16 +59,16 @@ const SPRITES = {
   }
 };
 
-// Project stations (edit these!)
+// Project stations
 const PROJECTS = [
   {
-    id: "Zenog",
+    id: "zenog",
     title: "2D High Score Game",
     subtitle: "Tight movement + sprite sheets + enemy AI",
     x: 300, y: 240,
     w: 150, h: 120,
     description:
-      "A fast, responsive 2D platformer prototype focused on player-feel, cutscenes, and clean collisions.",
+      "A fast, responsive 2D game focused on player-feel, cutscenes, and clean collisions.",
     bullets: [
       "Implemented movement system (accel/decel, coyote time, jump buffering).",
       "Built an animation controller + state machine for run/jump/attack.",
@@ -77,51 +77,56 @@ const PROJECTS = [
     tech: ["XNA Framework", "C#", "Aseprite", "Git"],
     links: [
       { label: "GitHub Repo", href: "https://github.com/Kaboochy/SchoolZenog" },
-      { label: "Playable Build", href: "https://YOUR_ITCH_IO_PAGE" },
+      { label: "Playable Build", href: "https://YOUR_ITCH_IO_PAGE" }
     ],
     media: {
       type: "iframe",
-      src: "https://youtu.be/onYZIVCZa5M"
+      // use embed for iframe:
+      src: "https://www.youtube.com/embed/onYZIVCZa5M"
+    }
   },
+
   {
-    id: "Project Kaos",
-    title: "UE 3D Game",
+    id: "project-kaos",
+    title: "Project Kaos",
     subtitle: "Home-made animations, assets, and gameplay",
     x: 600, y: 240,
     w: 150, h: 95,
     description:
-      "Project Kaos is a first-person action RPG that finds genius Zy fighting to reunite the city of Zenog by defeating the evil power of Kaos magic.",
+      "Project Kaos is a first-person action RPG following Zy as he fights to reunite the city of Zenog by defeating the power of Kaos magic.",
     bullets: [
-      "Motion captured animations made with Xbox Kinect.",
-      "Home-made assets made within Blender",
-      "Full utilization of Unreal Engine's Blueprints."
+      "Motion-captured animations using Xbox Kinect.",
+      "Created original assets in Blender.",
+      "Built gameplay using Unreal Engine Blueprints."
     ],
-    tech: ["Unreal Engine", "Blender", "First Person Shooter"],
+    tech: ["Unreal Engine", "Blueprints", "Blender", "FPS"],
     links: [
       { label: "Project Site", href: "https://sites.google.com/k12.friscoisd.org/projectkaos/home" }
     ],
     media: null
   },
+
   {
-    id: "Blue Car",
-    title: "Browser Game",
+    id: "blue-car",
+    title: "Blue Car",
     subtitle: "Optimization, game feel, rendering",
     x: 500, y: 440,
     w: 150, h: 95,
     description:
-      "A Downhill racing time trial game optimized to work in the Chrome browser on itch.io!",
+      "A downhill racing time-trial game optimized to run smoothly in Chrome on itch.io.",
     bullets: [
-      "Custom assets made and animated in Maya",
-      "Fully programmed in Unity using C#",
-      "Optimized to run smoothly while rendering quality lighting effects."
+      "Created and animated custom assets in Maya.",
+      "Programmed gameplay in Unity using C#.",
+      "Optimized rendering and lighting for browser performance."
     ],
-    tech: ["Unity Editor", "C#", "Maya"],
+    tech: ["Unity", "C#", "Maya", "WebGL"],
     links: [
-      { label: "itch.io Page", href: "https://kaboochy.itch.io/blue-car" }
+      { label: "itch.io Page", href: "https://kaboochy.itch.io/" }
     ],
     media: null
   }
 ];
+
 
 // ---- Input
 const keys = new Set();
