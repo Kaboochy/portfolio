@@ -65,8 +65,8 @@ const PROJECTS = [
     id: "Zenog",
     title: "2D High Score Game",
     subtitle: "Tight movement + sprite sheets + enemy AI",
-    x: 420, y: 240,
-    w: 150, h: 95,
+    x: 300, y: 240,
+    w: 150, h: 120,
     description:
       "A fast, responsive 2D platformer prototype focused on player-feel, cutscenes, and clean collisions.",
     bullets: [
@@ -85,7 +85,7 @@ const PROJECTS = [
     id: "combat",
     title: "Combat Demo",
     subtitle: "Hitboxes, timing, and feedback",
-    x: 980, y: 330,
+    x: 600, y: 240,
     w: 150, h: 95,
     description:
       "A combat-focused demo exploring hit-confirm, knockback, enemy states, and readable VFX timing.",
@@ -104,7 +104,7 @@ const PROJECTS = [
     id: "tools",
     title: "Level Tool",
     subtitle: "Editor tooling / pipeline",
-    x: 760, y: 650,
+    x: 500, y: 440,
     w: 150, h: 95,
     description:
       "A small tool to speed up level creation (brush placement, tile palette, and export settings).",
