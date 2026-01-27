@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Victor — Game Dev Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="hud">
+    <div class="brand">
+      <div class="dot"></div>
+      <div class="text">
+        <div class="name">Victor — Game Dev Portfolio</div>
+        <div class="sub">WASD to move • E to interact • GitHub Pages</div>
+      </div>
+    </div>
+    <div class="hint" id="hint">Walk to a sign</div>
+  </div>
+
+  <canvas id="game" aria-label="Portfolio game canvas"></canvas>
+
+  <!-- Modal -->
+  <div id="modalBackdrop" class="backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modalHeader">
+        <h2 id="modalTitle">Title</h2>
+        <button id="modalClose" class="closeBtn" aria-label="Close">✕</button>
+      </div>
+      <div id="modalBody" class="modalBody"></div>
+      <div id="modalActions" class="modalActions"></div>
+      <div class="modalFooter">
+        <span class="small">Tip: add videos/GIFs + links to builds for internships.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
