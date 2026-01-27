@@ -62,21 +62,21 @@ const SPRITES = {
 // Project stations (edit these!)
 const PROJECTS = [
   {
-    id: "platformer",
-    title: "2D Platformer",
-    subtitle: "Tight movement + juice + level loop",
+    id: "Zenog",
+    title: "2D High Score Game",
+    subtitle: "Tight movement + sprite sheets + enemy AI",
     x: 420, y: 240,
     w: 150, h: 95,
     description:
-      "A fast, responsive 2D platformer prototype focused on player-feel, jump arcs, coyote time, and clean collisions.",
+      "A fast, responsive 2D platformer prototype focused on player-feel, cutscenes, and clean collisions.",
     bullets: [
       "Implemented movement system (accel/decel, coyote time, jump buffering).",
-      "Built an animation controller + state machine for run/jump/land.",
-      "Designed 3 levels to teach mechanics and increase challenge."
+      "Built an animation controller + state machine for run/jump/attack.",
+      "Designed a scaling system to increase the challenge."
     ],
-    tech: ["Unity", "C#", "Aseprite", "Git"],
+    tech: ["XNA Framework", "C#", "Aseprite", "Git"],
     links: [
-      { label: "GitHub Repo", href: "https://github.com/YOUR_GITHUB/REPO" },
+      { label: "GitHub Repo", href: "https://github.com/Kaboochy/SchoolZenog" },
       { label: "Playable Build", href: "https://YOUR_ITCH_IO_PAGE" },
     ],
     media: null // later you can set: { type:"img", src:"assets/screenshots/platformer.png" }
