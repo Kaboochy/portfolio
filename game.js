@@ -64,20 +64,20 @@ const PROJECTS = [
   {
     id: "zenog",
     title: "2D High Score Game",
-    subtitle: "Tight movement + sprite sheets + enemy AI",
+    subtitle: "Made with XNA, sprite sheets, and enemy AI",
     x: 300, y: 240,
     w: 150, h: 120,
     description:
       "A fast, responsive 2D game focused on player-feel, cutscenes, and clean collisions.",
     bullets: [
-      "Implemented movement system (accel/decel, coyote time, jump buffering).",
+      "Implemented movement system.",
       "Built an animation controller + state machine for run/jump/attack.",
-      "Designed a scaling system to increase the challenge."
+      "Designed a dynamic enemy system that managed the game's difficulty."
     ],
     tech: ["XNA Framework", "C#", "Aseprite", "Git"],
     links: [
       { label: "GitHub Repo", href: "https://github.com/Kaboochy/SchoolZenog" },
-      { label: "Playable Build", href: "https://YOUR_ITCH_IO_PAGE" }
+      { label: "Playable Build", href: "https://YOUR_ITCH_IO_PAGE" } //ADD SCHOOL ZENOG TO ITCH BRO
     ],
     media: {
       type: "iframe",
@@ -88,7 +88,7 @@ const PROJECTS = [
 
   {
     id: "project-kaos",
-    title: "Project Kaos",
+    title: "3D Unreal Engine Game",
     subtitle: "Home-made animations, assets, and gameplay",
     x: 600, y: 240,
     w: 150, h: 95,
@@ -103,12 +103,15 @@ const PROJECTS = [
     links: [
       { label: "Project Site", href: "https://sites.google.com/k12.friscoisd.org/projectkaos/home" }
     ],
-    media: null
+    media: {
+  type: "img",
+  src: "assets/projectKaosScreenshot.png"
+}
   },
 
   {
     id: "blue-car",
-    title: "Blue Car",
+    title: "Browser-Based Unity Game",
     subtitle: "Optimization, game feel, rendering",
     x: 500, y: 440,
     w: 150, h: 95,
@@ -123,7 +126,11 @@ const PROJECTS = [
     links: [
       { label: "itch.io Page", href: "https://kaboochy.itch.io/" }
     ],
-    media: null
+    media: {
+      type: "iframe",
+      // use embed for iframe:
+      src: "https://youtu.be/T2XLLKnBQ3U"
+    }
   }
 ];
 
