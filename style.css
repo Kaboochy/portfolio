@@ -105,7 +105,7 @@ body{
   border: 1px solid rgba(255,255,255,0.10);
   overflow:hidden;
   position: relative;
-  height: min(70vh, 680px);
+  height: min(80vh, 680px);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.04), transparent 50%),
     radial-gradient(900px 500px at 50% 20%, rgba(255,255,255,0.06), transparent 60%),
@@ -192,7 +192,7 @@ body{
 .stationPrompt{
   font-size: 12px;
   color: rgba(94,242,160,0.95);
-  font-weight: 700;
+  font-weight: 0;
 }
 
 /* About panel */
