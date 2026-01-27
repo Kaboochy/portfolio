@@ -105,7 +105,7 @@ body{
   border: 1px solid rgba(255,255,255,0.10);
   overflow:hidden;
   position: relative;
-  height: min(80vh, 680px);
+  height: min(85vh, 860px);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.04), transparent 50%),
     radial-gradient(900px 500px at 50% 20%, rgba(255,255,255,0.06), transparent 60%),
@@ -200,7 +200,7 @@ body{
   position: absolute;
   top: 14px;
   right: 14px;
-  width: min(420px, calc(100% - 28px));
+  width: min(560px, calc(100% - 28px));
   height: calc(100% - 28px);
   border-radius: var(--radius);
   background: rgba(10,14,28,0.66);
