@@ -330,6 +330,15 @@ body{
   gap: 10px;
 }
 
+#version {
+  position: fixed;
+  bottom: 8px;
+  right: 12px;
+  font-size: 12px;
+  opacity: 0.6;
+  pointer-events: none; /* important for games */
+}
+
 @media (max-width: 860px){
   .modalGrid{ grid-template-columns: 1fr; }
 }
