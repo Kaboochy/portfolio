@@ -27,6 +27,21 @@ const aboutPanel = document.getElementById("aboutPanel");
 const btnAbout = document.getElementById("btnAbout");
 const btnCloseAbout = document.getElementById("btnCloseAbout");
 
+btnAbout.addEventListener("click", () => {
+  aboutPanel.classList.add("open");
+});
+
+btnCloseAbout.addEventListener("click", () => {
+  aboutPanel.classList.remove("open");
+});
+
+//smooth outside click to close
+aboutPanel.addEventListener("click", (e) => { 
+  if (e.target === aboutPanel) {
+    aboutPanel.classList.remove("open");
+  }
+});
+
 // ---- Config
 const WORLD_W = 1400;
 const WORLD_H = 900;
