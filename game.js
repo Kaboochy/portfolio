@@ -91,12 +91,12 @@ const PROJECTS = [
     title: "3D Unreal Engine Game",
     subtitle: "Home-made animations, assets, and gameplay",
     x: 600, y: 240,
-    w: 150, h: 95,
+    w: 150, h: 130,
     description:
       "Project Kaos is a first-person action RPG following Zy as he fights to reunite the city of Zenog by defeating the power of Kaos magic.",
     bullets: [
       "Motion-captured animations using Xbox Kinect.",
-      "Created original assets in Blender.",
+      "Lead a team using Scrum and Agile principles.",
       "Built gameplay using Unreal Engine Blueprints."
     ],
     tech: ["Unreal Engine", "Blueprints", "Blender", "FPS"],
@@ -114,7 +114,7 @@ const PROJECTS = [
     title: "Browser-Based Unity Game",
     subtitle: "Optimization, game feel, rendering",
     x: 500, y: 440,
-    w: 150, h: 95,
+    w: 150, h: 110,
     description:
       "A downhill racing time-trial game optimized to run smoothly in Chrome on itch.io.",
     bullets: [
