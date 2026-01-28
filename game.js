@@ -4,7 +4,6 @@
 // - Stations (projects) open a modal when you press E nearby
 // - About panel toggle
 //
-// Your spritesheets (based on provided sizes):
 // Idle: 512x32 => 16 frames of 32x32
 // Run : 256x32 => 8 frames of 32x32
 
@@ -24,28 +23,51 @@ const modalLinks = document.getElementById("modalLinks");
 const modalMedia = document.getElementById("modalMedia");
 
 const aboutPanel = document.getElementById("aboutPanel");
+const aboutBackdrop = document.getElementById("aboutBackdrop");
 const btnAbout = document.getElementById("btnAbout");
 const btnCloseAbout = document.getElementById("btnCloseAbout");
 
-btnAbout.addEventListener("click", () => {
+/* ================= ABOUT PANEL (OVERLAY + FADE) ================= */
+btnAbout.addEventListener("click", openAbout);
+btnCloseAbout.addEventListener("click", closeAbout);
+aboutBackdrop.addEventListener("click", closeAbout);
+
+function openAbout() {
   aboutPanel.classList.add("open");
-});
+  aboutBackdrop.classList.add("open");
+  aboutBackdrop.setAttribute("aria-hidden", "false");
+}
 
-btnCloseAbout.addEventListener("click", () => {
+function closeAbout() {
   aboutPanel.classList.remove("open");
-});
+  aboutBackdrop.classList.remove("open");
+  aboutBackdrop.setAttribute("aria-hidden", "true");
+}
 
-//smooth outside click to close
-aboutPanel.addEventListener("click", (e) => { 
-  if (e.target === aboutPanel) {
-    aboutPanel.classList.remove("open");
-  }
-});
+/* ================= WORLD SIZE = VIEWPORT SIZE =================
+   This removes camera scrolling and parallax.
+*/
+let WORLD_W = 0;
+let WORLD_H = 0;
 
-// ---- Config
-const WORLD_W = 1400;
-const WORLD_H = 900;
+function fitWorldToViewport() {
+  WORLD_W = gameEl.clientWidth;
+  WORLD_H = gameEl.clientHeight;
 
+  worldEl.style.width = WORLD_W + "px";
+  worldEl.style.height = WORLD_H + "px";
+
+  clampProjectsToViewport();
+  refreshStationsDOM();
+
+  // Keep player inside visible area
+  PLAYER.x = Math.max(20, Math.min(PLAYER.x, WORLD_W - 20));
+  PLAYER.y = Math.max(20, Math.min(PLAYER.y, WORLD_H - 20));
+}
+
+window.addEventListener("resize", fitWorldToViewport);
+
+/* ================= PLAYER ================= */
 const PLAYER = {
   x: 140,
   y: 220,
@@ -92,11 +114,10 @@ const PROJECTS = [
     tech: ["XNA Framework", "C#", "Aseprite", "Git"],
     links: [
       { label: "GitHub Repo", href: "https://github.com/Kaboochy/SchoolZenog" },
-      { label: "Playable Build", href: "https://YOUR_ITCH_IO_PAGE" } //ADD SCHOOL ZENOG TO ITCH BRO
+      { label: "Playable Build", href: "https://YOUR_ITCH_IO_PAGE" }
     ],
     media: {
       type: "iframe",
-      // use embed for iframe:
       src: "https://www.youtube.com/embed/onYZIVCZa5M"
     }
   },
@@ -119,9 +140,9 @@ const PROJECTS = [
       { label: "Project Site", href: "https://sites.google.com/k12.friscoisd.org/projectkaos/home" }
     ],
     media: {
-  type: "img",
-  src: "assets/projectKaosScreenshot.png"
-}
+      type: "img",
+      src: "assets/projectKaosScreenshot.png"
+    }
   },
 
   {
@@ -143,14 +164,13 @@ const PROJECTS = [
     ],
     media: {
       type: "iframe",
-      // use embed for iframe:
+      // if you want a real embed, use https://www.youtube.com/embed/<id>
       src: "https://youtu.be/T2XLLKnBQ3U"
     }
   }
 ];
 
-
-// ---- Input
+/* ================= INPUT ================= */
 const keys = new Set();
 let justPressedE = false;
 
@@ -159,10 +179,8 @@ window.addEventListener("keydown", (e) => {
   keys.add(k);
   if (k === "e") justPressedE = true;
 
-  // prevent page scrolling when pressing WASD
   if (["w","a","s","d"," "].includes(k)) e.preventDefault();
 
-  // ESC closes modal/panel
   if (k === "escape") {
     closeModal();
     closeAbout();
@@ -173,19 +191,24 @@ window.addEventListener("keyup", (e) => {
   keys.delete(e.key.toLowerCase());
 });
 
-// ---- Build world bounds visually (optional simple “walls”)
-worldEl.style.width = WORLD_W + "px";
-worldEl.style.height = WORLD_H + "px";
-
-// Create stations
+/* ================= STATIONS ================= */
 const stationEls = new Map();
+
+function refreshStationsDOM() {
+  for (const p of PROJECTS) {
+    const el = stationEls.get(p.id);
+    if (!el) continue;
+    el.style.left = p.x + "px";
+    el.style.top = p.y + "px";
+    el.style.width = p.w + "px";
+    el.style.height = p.h + "px";
+  }
+}
+
+// Create stations once
 for (const p of PROJECTS) {
   const el = document.createElement("div");
   el.className = "station";
-  el.style.left = p.x + "px";
-  el.style.top = p.y + "px";
-  el.style.width = p.w + "px";
-  el.style.height = p.h + "px";
 
   el.innerHTML = `
     <div class="stationTitle">${p.title}</div>
@@ -197,28 +220,40 @@ for (const p of PROJECTS) {
   stationEls.set(p.id, el);
 }
 
-// ---- About panel
-btnAbout.addEventListener("click", () => {
-  aboutPanel.classList.add("open");
-});
-btnCloseAbout.addEventListener("click", closeAbout);
-
-function closeAbout() {
-  aboutPanel.classList.remove("open");
+/* Clamp station positions so they never render off-screen */
+function clampProjectsToViewport() {
+  const pad = 16;
+  for (const p of PROJECTS) {
+    const maxX = Math.max(pad, WORLD_W - p.w - pad);
+    const maxY = Math.max(pad, WORLD_H - p.h - pad);
+    p.x = Math.max(pad, Math.min(p.x, maxX));
+    p.y = Math.max(pad, Math.min(p.y, maxY));
+  }
 }
 
-// ---- Modal
+/* ================= MODAL ================= */
 btnCloseModal.addEventListener("click", closeModal);
 modalBackdrop.addEventListener("click", (e) => {
   if (e.target === modalBackdrop) closeModal();
 });
+
+function toYouTubeEmbed(url) {
+  // Allow either embed or youtu.be formats
+  try {
+    if (url.includes("youtube.com/embed/")) return url;
+    if (url.includes("youtu.be/")) {
+      const id = url.split("youtu.be/")[1].split(/[?&]/)[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+  } catch {}
+  return url;
+}
 
 function openModal(project) {
   modalTitle.textContent = project.title;
   modalSubtitle.textContent = project.subtitle;
   modalDescription.textContent = project.description;
 
-  // bullets
   modalBullets.innerHTML = "";
   for (const b of project.bullets) {
     const li = document.createElement("li");
@@ -226,7 +261,6 @@ function openModal(project) {
     modalBullets.appendChild(li);
   }
 
-  // tech chips
   modalTech.innerHTML = "";
   for (const t of project.tech) {
     const li = document.createElement("li");
@@ -234,7 +268,6 @@ function openModal(project) {
     modalTech.appendChild(li);
   }
 
-  // links
   modalLinks.innerHTML = "";
   for (const l of project.links) {
     const a = document.createElement("a");
@@ -246,7 +279,6 @@ function openModal(project) {
     modalLinks.appendChild(a);
   }
 
-  // media (optional)
   modalMedia.innerHTML = "";
   if (project.media?.type === "img") {
     const img = document.createElement("img");
@@ -258,7 +290,7 @@ function openModal(project) {
     modalMedia.appendChild(img);
   } else if (project.media?.type === "iframe") {
     const iframe = document.createElement("iframe");
-    iframe.src = project.media.src;
+    iframe.src = toYouTubeEmbed(project.media.src);
     iframe.title = project.title + " video";
     iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
     iframe.allowFullscreen = true;
@@ -283,25 +315,19 @@ function closeModal() {
   modalBackdrop.setAttribute("aria-hidden", "true");
 }
 
-// ---- Sprite animation state
+/* ================= SPRITE ANIMATION ================= */
 let animTime = 0;
 let currentFrame = 0;
 
 function setPlayerSprite(state) {
   const s = SPRITES[state];
   playerEl.style.backgroundImage = `url("${s.url}")`;
-
-  // Background size: sheet width scaled automatically, keep height = 100%
-  // We'll shift background-position-x by frame index.
-  // Because our CSS scales sprite to 64x64 while frame is 32x32,
-  // the background-position uses the rendered size. We’ll compute using element width.
 }
 
 function updateSprite(dt) {
   const state = PLAYER.state;
   const s = SPRITES[state];
 
-  // Setup sprite sheet
   if (!playerEl.dataset.sprite || playerEl.dataset.sprite !== state) {
     playerEl.dataset.sprite = state;
     animTime = 0;
@@ -309,7 +335,6 @@ function updateSprite(dt) {
     setPlayerSprite(state);
   }
 
-  // Advance animation
   animTime += dt;
   const frameDuration = 1 / s.fps;
   while (animTime >= frameDuration) {
@@ -317,26 +342,22 @@ function updateSprite(dt) {
     currentFrame = (currentFrame + 1) % s.frames;
   }
 
-  // Compute rendered frame width in pixels (on screen).
   const renderedW = playerEl.getBoundingClientRect().width;
   const shiftX = currentFrame * renderedW;
 
-  // Flip sprite by scaling X
   const flip = PLAYER.facing === 1 ? 1 : -1;
   playerEl.style.transform = `translate(-50%, -50%) scaleX(${flip})`;
 
-  // Background positioning to show the correct frame
   playerEl.style.backgroundPosition = `-${shiftX}px 0px`;
   playerEl.style.backgroundSize = `${renderedW * s.frames}px 100%`;
 }
 
-// ---- Collision helpers
+/* ================= COLLISION HELPERS ================= */
 function aabb(ax, ay, aw, ah, bx, by, bw, bh) {
   return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
 }
 
 function nearestProjectInRange() {
-  // small interaction box around player
   const px = PLAYER.x - PLAYER.width / 2;
   const py = PLAYER.y - PLAYER.height / 2;
 
@@ -348,34 +369,21 @@ function nearestProjectInRange() {
   return null;
 }
 
-// ---- Camera (scroll world inside the viewport)
+/* ================= CAMERA =================
+   No camera movement. The world is the viewport.
+*/
 function updateCamera() {
-  const viewW = gameEl.clientWidth;
-  const viewH = gameEl.clientHeight;
-
-  // Center camera on player
-  let camX = PLAYER.x - viewW / 2;
-  let camY = PLAYER.y - viewH / 2;
-
-  // Clamp camera within world
-  camX = Math.max(0, Math.min(camX, WORLD_W - viewW));
-  camY = Math.max(0, Math.min(camY, WORLD_H - viewH));
-
-  // Move world opposite camera
-  worldEl.style.transform = `translate(${-camX}px, ${-camY}px)`;
-
-  // Optional: make grid “feel alive” by offsetting background
-  worldEl.style.backgroundPosition = `0 0, ${-camX}px ${-camY}px, ${-camX}px ${-camY}px`;
+  worldEl.style.transform = `translate(0px, 0px)`;
+  // No backgroundPosition updates = no parallax feel
 }
 
-// ---- Main loop
+/* ================= MAIN LOOP ================= */
 let last = performance.now();
 
 function tick(now) {
   const dt = Math.min(0.033, (now - last) / 1000);
   last = now;
 
-  // Don’t move when modal is open (keeps it clean)
   const modalOpen = modalBackdrop.classList.contains("open");
 
   if (!modalOpen) {
@@ -385,7 +393,6 @@ function tick(now) {
     if (keys.has("w")) my -= 1;
     if (keys.has("s")) my += 1;
 
-    // Normalize diagonal
     if (mx !== 0 && my !== 0) {
       const inv = 1 / Math.sqrt(2);
       mx *= inv; my *= inv;
@@ -394,19 +401,16 @@ function tick(now) {
     const moving = (mx !== 0 || my !== 0);
     PLAYER.state = moving ? "run" : "idle";
 
-    // Facing direction
     if (mx > 0) PLAYER.facing = 1;
     else if (mx < 0) PLAYER.facing = -1;
 
-    // Move
     PLAYER.x += mx * PLAYER.speed * dt;
     PLAYER.y += my * PLAYER.speed * dt;
 
-    // Keep inside world bounds (simple clamp)
+    // Clamp to VISIBLE AREA (viewport)
     PLAYER.x = Math.max(20, Math.min(PLAYER.x, WORLD_W - 20));
     PLAYER.y = Math.max(20, Math.min(PLAYER.y, WORLD_H - 20));
 
-    // Interaction
     const near = nearestProjectInRange();
     if (near) {
       hintEl.innerHTML = `Near <b>${near.title}</b> — Press <b>E</b> to open.`;
@@ -418,7 +422,6 @@ function tick(now) {
 
   justPressedE = false;
 
-  // Update player DOM position (in world coordinates)
   playerEl.style.left = PLAYER.x + "px";
   playerEl.style.top = PLAYER.y + "px";
 
@@ -428,9 +431,11 @@ function tick(now) {
   requestAnimationFrame(tick);
 }
 
+// Init sizing + station positions
+fitWorldToViewport();
 requestAnimationFrame(tick);
 
-// ===== Version label =====
+/* ================= VERSION LABEL ================= */
 const version = "0.1.4"; // bump this when you want
 const buildTime = new Date().toLocaleString();
 
@@ -438,4 +443,3 @@ const versionEl = document.getElementById("version");
 if (versionEl) {
   versionEl.textContent = `v${version} • built ${buildTime}`;
 }
-
