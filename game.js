@@ -429,3 +429,13 @@ function tick(now) {
 }
 
 requestAnimationFrame(tick);
+
+// ===== Version label =====
+const version = "0.1.4"; // bump this when you want
+const buildTime = new Date().toLocaleString();
+
+const versionEl = document.getElementById("version");
+if (versionEl) {
+  versionEl.textContent = `v${version} • built ${buildTime}`;
+}
+
