@@ -22,52 +22,56 @@ body{
   overflow-x:hidden;
 }
 
+/* ===== TOP BAR (BIGGER) ===== */
 .topbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding: 14px 18px;
+  padding: 20px 22px;                 /* bigger */
   position: sticky;
   top:0;
   z-index: 10;
   backdrop-filter: blur(10px);
-  background: rgba(10,14,28,0.55);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(10,14,28,0.62);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:14px;
 }
 .dot{
-  width:12px;
-  height:12px;
+  width:14px;                         /* bigger */
+  height:14px;
   border-radius:99px;
   background: var(--accent);
-  box-shadow: 0 0 25px rgba(94,242,160,0.45);
+  box-shadow: 0 0 28px rgba(94,242,160,0.45);
 }
 .name{
-  font-weight:800;
-  letter-spacing: 0.5px;
+  font-weight:900;
+  letter-spacing: 0.6px;
+  font-size: 18px;                    /* bigger */
 }
 .tag{
   color: var(--muted);
-  font-size: 13px;
-  margin-top: 2px;
+  font-size: 14px;                    /* bigger */
+  margin-top: 3px;
 }
 
-.nav{ display:flex; gap:10px; align-items:center; }
+.nav{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
 
+/* ===== BUTTONS (BIGGER) ===== */
 .btn{
   border: 1px solid rgba(255,255,255,0.16);
   background: rgba(255,255,255,0.08);
   color: var(--text);
-  padding: 9px 12px;
-  border-radius: 12px;
+  padding: 12px 16px;                 /* bigger */
+  border-radius: 14px;                /* slightly rounder */
   cursor:pointer;
   text-decoration:none;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 14px;                    /* bigger */
   transition: transform .12s ease, background .12s ease, border-color .12s ease;
 }
 .btn:hover{
@@ -80,8 +84,8 @@ body{
   border:1px solid rgba(255,255,255,0.14);
   background: rgba(255,255,255,0.06);
   color: var(--text);
-  padding: 7px 10px;
-  border-radius: 12px;
+  padding: 9px 12px;                  /* bigger */
+  border-radius: 14px;
   cursor:pointer;
 }
 
@@ -117,7 +121,7 @@ body{
   left: 0;
   top: 0;
 
-  /* keep your backgrounds */
+  /* background stays STATIC now (no parallax updates from JS) */
   background:
     linear-gradient(0deg, rgba(94,242,160,0.08), transparent 35%),
     linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
@@ -125,7 +129,6 @@ body{
   background-size: auto, 48px 48px, 48px 48px;
   background-position: 0 0, 0 0, 0 0;
 }
-
 
 .hint{
   position:absolute;
@@ -151,14 +154,13 @@ body{
 /* Player sprite */
 .player{
   position:absolute;
-  width: 64px;   /* scale up from 32x32 */
+  width: 64px;
   height: 64px;
   image-rendering: pixelated;
   transform: translate(-50%, -50%);
   left: 120px;
   top: 200px;
 
-  /* spritesheet as background image, JS will swap between idle/run */
   background-repeat: no-repeat;
   background-size: auto 100%;
   filter: drop-shadow(0 10px 14px rgba(0,0,0,0.40));
@@ -195,24 +197,52 @@ body{
   font-weight: 0;
 }
 
-/* About panel */
+/* ===== ABOUT PANEL AS OVERLAY (HIDDEN UNTIL OPEN + FADE) ===== */
+
+/* Backdrop */
+.panelBackdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+  z-index: 40;
+}
+.panelBackdrop.open{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Panel */
 .panel{
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: min(560px, calc(100% - 28px));
-  height: calc(100% - 28px);
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: min(720px, calc(100% - 28px));
+  height: min(780px, calc(100% - 110px));
   border-radius: var(--radius);
-  background: rgba(10,14,28,0.66);
+  background: rgba(10,14,28,0.70);
   border: 1px solid rgba(255,255,255,0.10);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
-  transform: translateX(110%);
-  transition: transform .18s ease;
-  z-index: 6;
+  backdrop-filter: blur(12px);
+  z-index: 41;
   overflow:hidden;
+
+  /* Hidden state */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.98);
+  transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
 }
-.panel.open{ transform: translateX(0); }
+.panel.open{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+  transition: opacity .18s ease, transform .18s ease, visibility 0s linear 0s;
+}
 
 .panelHeader{
   display:flex;
@@ -336,7 +366,7 @@ body{
   right: 12px;
   font-size: 12px;
   opacity: 0.6;
-  pointer-events: none; /* important for games */
+  pointer-events: none;
 }
 
 @media (max-width: 860px){
