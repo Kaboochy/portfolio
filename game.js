@@ -1,16 +1,11 @@
-// ======= Simple Portfolio Game =======
-// - WASD movement
-// - Idle / Run animation using spritesheets
-// - Stations (projects) open a modal when you press E nearby
-// - About panel toggle
+// ======= Portfolio site script =======
+// - Dino mascot smoothly follows the mouse cursor (idle/run sprite swap)
+// - Project cards are rendered from data and open a modal with details
 //
 // Idle: 512x32 => 16 frames of 32x32
 // Run : 256x32 => 8 frames of 32x32
 
-const gameEl = document.getElementById("game");
-const worldEl = document.getElementById("world");
-const playerEl = document.getElementById("player");
-const hintEl = document.getElementById("hint");
+const dinoEl = document.getElementById("dino");
 
 const modalBackdrop = document.getElementById("modalBackdrop");
 const btnCloseModal = document.getElementById("btnCloseModal");
@@ -22,88 +17,14 @@ const modalTech = document.getElementById("modalTech");
 const modalLinks = document.getElementById("modalLinks");
 const modalMedia = document.getElementById("modalMedia");
 
-const aboutPanel = document.getElementById("aboutPanel");
-const aboutBackdrop = document.getElementById("aboutBackdrop");
-const btnAbout = document.getElementById("btnAbout");
-const btnCloseAbout = document.getElementById("btnCloseAbout");
+const projectsGrid = document.getElementById("projectsGrid");
 
-/* ================= ABOUT PANEL (OVERLAY + FADE) ================= */
-btnAbout.addEventListener("click", openAbout);
-btnCloseAbout.addEventListener("click", closeAbout);
-aboutBackdrop.addEventListener("click", closeAbout);
-
-function openAbout() {
-  aboutPanel.classList.add("open");
-  aboutBackdrop.classList.add("open");
-  aboutBackdrop.setAttribute("aria-hidden", "false");
-}
-
-function closeAbout() {
-  aboutPanel.classList.remove("open");
-  aboutBackdrop.classList.remove("open");
-  aboutBackdrop.setAttribute("aria-hidden", "true");
-}
-
-/* ================= WORLD SIZE = VIEWPORT SIZE =================
-   This removes camera scrolling and parallax.
-*/
-let WORLD_W = 0;
-let WORLD_H = 0;
-
-function fitWorldToViewport() {
-  WORLD_W = gameEl.clientWidth;
-  WORLD_H = gameEl.clientHeight;
-
-  worldEl.style.width = WORLD_W + "px";
-  worldEl.style.height = WORLD_H + "px";
-
-  clampProjectsToViewport();
-  refreshStationsDOM();
-
-  // Keep player inside visible area
-  PLAYER.x = Math.max(20, Math.min(PLAYER.x, WORLD_W - 20));
-  PLAYER.y = Math.max(20, Math.min(PLAYER.y, WORLD_H - 20));
-}
-
-window.addEventListener("resize", fitWorldToViewport);
-
-/* ================= PLAYER ================= */
-const PLAYER = {
-  x: 140,
-  y: 220,
-  speed: 260,      // pixels/sec
-  facing: 1,       // 1 = right, -1 = left
-  width: 52,       // collision size (not sprite size)
-  height: 44,
-  state: "idle",
-};
-
-// Sprite animation config (frame size is 32x32, rendered as 64x64 by CSS)
-const SPRITES = {
-  idle: {
-    url: "assets/greenDinoIdle1.png",
-    frameW: 32,
-    frameH: 32,
-    frames: 16,
-    fps: 12,
-  },
-  run: {
-    url: "assets/greenDinoRun1.png",
-    frameW: 32,
-    frameH: 32,
-    frames: 8,
-    fps: 14,
-  }
-};
-
-// Project stations
+/* ================= PROJECT DATA ================= */
 const PROJECTS = [
   {
     id: "zenog",
     title: "2D High Score Game",
     subtitle: "Made with XNA, sprite sheets, and enemy AI",
-    x: 300, y: 240,
-    w: 150, h: 120,
     description:
       "A fast, responsive 2D game focused on player-feel, cutscenes, and clean collisions.",
     bullets: [
@@ -126,8 +47,6 @@ const PROJECTS = [
     id: "project-kaos",
     title: "3D Unreal Engine Game",
     subtitle: "Home-made animations, assets, and gameplay",
-    x: 600, y: 240,
-    w: 150, h: 130,
     description:
       "Project Kaos is a first-person action RPG following Zy as he fights to reunite the city of Zenog by defeating the power of Kaos magic.",
     bullets: [
@@ -149,8 +68,6 @@ const PROJECTS = [
     id: "blue-car",
     title: "Browser-Based Unity Game",
     subtitle: "Optimization, game feel, rendering",
-    x: 500, y: 440,
-    w: 150, h: 110,
     description:
       "A downhill racing time-trial game optimized to run smoothly in Chrome on itch.io.",
     bullets: [
@@ -164,71 +81,26 @@ const PROJECTS = [
     ],
     media: {
       type: "iframe",
-      // if you want a real embed, use https://www.youtube.com/embed/<id>
       src: "https://youtu.be/T2XLLKnBQ3U"
     }
   }
 ];
 
-/* ================= INPUT ================= */
-const keys = new Set();
-let justPressedE = false;
-
-window.addEventListener("keydown", (e) => {
-  const k = e.key.toLowerCase();
-  keys.add(k);
-  if (k === "e") justPressedE = true;
-
-  if (["w","a","s","d"," "].includes(k)) e.preventDefault();
-
-  if (k === "escape") {
-    closeModal();
-    closeAbout();
-  }
-}, { passive: false });
-
-window.addEventListener("keyup", (e) => {
-  keys.delete(e.key.toLowerCase());
-});
-
-/* ================= STATIONS ================= */
-const stationEls = new Map();
-
-function refreshStationsDOM() {
-  for (const p of PROJECTS) {
-    const el = stationEls.get(p.id);
-    if (!el) continue;
-    el.style.left = p.x + "px";
-    el.style.top = p.y + "px";
-    el.style.width = p.w + "px";
-    el.style.height = p.h + "px";
-  }
-}
-
-// Create stations once
+/* ================= RENDER PROJECT CARDS ================= */
 for (const p of PROJECTS) {
-  const el = document.createElement("div");
-  el.className = "station";
-
-  el.innerHTML = `
-    <div class="stationTitle">${p.title}</div>
-    <div class="stationSub">${p.subtitle}</div>
-    <div class="stationPrompt">Press E</div>
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "projectCard";
+  card.innerHTML = `
+    <div class="projectTitle">${p.title}</div>
+    <div class="projectSub">${p.subtitle}</div>
+    <div class="projectMeta">
+      ${p.tech.slice(0, 3).map((t) => `<span>${t}</span>`).join("")}
+    </div>
+    <div class="projectPrompt">View details →</div>
   `;
-
-  worldEl.appendChild(el);
-  stationEls.set(p.id, el);
-}
-
-/* Clamp station positions so they never render off-screen */
-function clampProjectsToViewport() {
-  const pad = 16;
-  for (const p of PROJECTS) {
-    const maxX = Math.max(pad, WORLD_W - p.w - pad);
-    const maxY = Math.max(pad, WORLD_H - p.h - pad);
-    p.x = Math.max(pad, Math.min(p.x, maxX));
-    p.y = Math.max(pad, Math.min(p.y, maxY));
-  }
+  card.addEventListener("click", () => openModal(p));
+  projectsGrid.appendChild(card);
 }
 
 /* ================= MODAL ================= */
@@ -236,9 +108,11 @@ btnCloseModal.addEventListener("click", closeModal);
 modalBackdrop.addEventListener("click", (e) => {
   if (e.target === modalBackdrop) closeModal();
 });
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeModal();
+});
 
 function toYouTubeEmbed(url) {
-  // Allow either embed or youtu.be formats
   try {
     if (url.includes("youtube.com/embed/")) return url;
     if (url.includes("youtu.be/")) {
@@ -315,24 +189,60 @@ function closeModal() {
   modalBackdrop.setAttribute("aria-hidden", "true");
 }
 
-/* ================= SPRITE ANIMATION ================= */
+/* ================= DINO MASCOT (follows the mouse) ================= */
+const SPRITES = {
+  idle: { url: "assets/greenDinoIdle1.png", frames: 16, fps: 12 },
+  run: { url: "assets/greenDinoRun1.png", frames: 8, fps: 14 },
+};
+
+const dino = {
+  x: window.innerWidth / 2,
+  y: window.innerHeight / 2,
+  facing: 1,
+  state: "idle",
+};
+
+const OFFSET_X = -46; // sit to the left of the cursor
+const OFFSET_Y = 40;  // sit below the cursor
+
+let targetX = dino.x;
+let targetY = dino.y;
+let hasMouse = false;
+
+window.addEventListener("mousemove", (e) => {
+  targetX = e.clientX + OFFSET_X;
+  targetY = e.clientY + OFFSET_Y;
+  hasMouse = true;
+});
+
+window.addEventListener(
+  "touchmove",
+  (e) => {
+    const t = e.touches[0];
+    if (!t) return;
+    targetX = t.clientX + OFFSET_X;
+    targetY = t.clientY + OFFSET_Y;
+    hasMouse = true;
+  },
+  { passive: true }
+);
+
 let animTime = 0;
 let currentFrame = 0;
 
-function setPlayerSprite(state) {
+function setDinoSprite(state) {
   const s = SPRITES[state];
-  playerEl.style.backgroundImage = `url("${s.url}")`;
+  dinoEl.style.backgroundImage = `url("${s.url}")`;
 }
 
-function updateSprite(dt) {
-  const state = PLAYER.state;
-  const s = SPRITES[state];
+function updateDinoSprite(dt) {
+  const s = SPRITES[dino.state];
 
-  if (!playerEl.dataset.sprite || playerEl.dataset.sprite !== state) {
-    playerEl.dataset.sprite = state;
+  if (dinoEl.dataset.sprite !== dino.state) {
+    dinoEl.dataset.sprite = dino.state;
     animTime = 0;
     currentFrame = 0;
-    setPlayerSprite(state);
+    setDinoSprite(dino.state);
   }
 
   animTime += dt;
@@ -342,104 +252,52 @@ function updateSprite(dt) {
     currentFrame = (currentFrame + 1) % s.frames;
   }
 
-  const renderedW = playerEl.getBoundingClientRect().width;
+  const renderedW = dinoEl.getBoundingClientRect().width;
   const shiftX = currentFrame * renderedW;
 
-  const flip = PLAYER.facing === 1 ? 1 : -1;
-  playerEl.style.transform = `translate(-50%, -50%) scaleX(${flip})`;
-
-  playerEl.style.backgroundPosition = `-${shiftX}px 0px`;
-  playerEl.style.backgroundSize = `${renderedW * s.frames}px 100%`;
+  const flip = dino.facing === 1 ? 1 : -1;
+  dinoEl.style.transform = `translate(-50%, -50%) scaleX(${flip})`;
+  dinoEl.style.backgroundPosition = `-${shiftX}px 0px`;
+  dinoEl.style.backgroundSize = `${renderedW * s.frames}px 100%`;
 }
 
-/* ================= COLLISION HELPERS ================= */
-function aabb(ax, ay, aw, ah, bx, by, bw, bh) {
-  return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
-}
+const FOLLOW_SPEED = 90; // constant px/sec chase speed
+const ARRIVE_DIST = 2;   // snap when this close, avoids jitter
 
-function nearestProjectInRange() {
-  const px = PLAYER.x - PLAYER.width / 2;
-  const py = PLAYER.y - PLAYER.height / 2;
-
-  for (const p of PROJECTS) {
-    if (aabb(px, py, PLAYER.width, PLAYER.height, p.x, p.y, p.w, p.h)) {
-      return p;
-    }
-  }
-  return null;
-}
-
-/* ================= CAMERA =================
-   No camera movement. The world is the viewport.
-*/
-function updateCamera() {
-  worldEl.style.transform = `translate(0px, 0px)`;
-  // No backgroundPosition updates = no parallax feel
-}
-
-/* ================= MAIN LOOP ================= */
 let last = performance.now();
 
 function tick(now) {
   const dt = Math.min(0.033, (now - last) / 1000);
   last = now;
 
-  const modalOpen = modalBackdrop.classList.contains("open");
+  if (hasMouse) {
+    const dx = targetX - dino.x;
+    const dy = targetY - dino.y;
+    const dist = Math.hypot(dx, dy);
 
-  if (!modalOpen) {
-    let mx = 0, my = 0;
-    if (keys.has("a")) mx -= 1;
-    if (keys.has("d")) mx += 1;
-    if (keys.has("w")) my -= 1;
-    if (keys.has("s")) my += 1;
-
-    if (mx !== 0 && my !== 0) {
-      const inv = 1 / Math.sqrt(2);
-      mx *= inv; my *= inv;
-    }
-
-    const moving = (mx !== 0 || my !== 0);
-    PLAYER.state = moving ? "run" : "idle";
-
-    if (mx > 0) PLAYER.facing = 1;
-    else if (mx < 0) PLAYER.facing = -1;
-
-    PLAYER.x += mx * PLAYER.speed * dt;
-    PLAYER.y += my * PLAYER.speed * dt;
-
-    // Clamp to VISIBLE AREA (viewport)
-    PLAYER.x = Math.max(20, Math.min(PLAYER.x, WORLD_W - 20));
-    PLAYER.y = Math.max(20, Math.min(PLAYER.y, WORLD_H - 20));
-
-    const near = nearestProjectInRange();
-    if (near) {
-      hintEl.innerHTML = `Near <b>${near.title}</b> — Press <b>E</b> to open.`;
-      if (justPressedE) openModal(near);
+    if (dist > ARRIVE_DIST) {
+      const step = Math.min(dist, FOLLOW_SPEED * dt);
+      dino.x += (dx / dist) * step;
+      dino.y += (dy / dist) * step;
+      dino.state = "run";
+      if (Math.abs(dx) > 2) dino.facing = dx > 0 ? 1 : -1;
     } else {
-      hintEl.innerHTML = `Walk with <b>WASD</b>. Approach a project and press <b>E</b> to open.`;
+      dino.state = "idle";
     }
+
+    dinoEl.style.left = dino.x + "px";
+    dinoEl.style.top = dino.y + "px";
+    dinoEl.style.opacity = 1;
+  } else {
+    dinoEl.style.opacity = 0;
   }
 
-  justPressedE = false;
-
-  playerEl.style.left = PLAYER.x + "px";
-  playerEl.style.top = PLAYER.y + "px";
-
-  updateSprite(dt);
-  updateCamera();
-
+  updateDinoSprite(dt);
   requestAnimationFrame(tick);
 }
 
-// Init sizing + station positions
-fitWorldToViewport();
 requestAnimationFrame(tick);
 
-/* ================= VERSION LABEL ================= */
-const version = "0.1.4"; // bump this when you want
-const buildTime = new Date().toLocaleString();
-
-const versionEl = document.getElementById("version");
-if (versionEl) {
-  versionEl.textContent = `v${version} • built ${buildTime}`;
-}
+/* ================= FOOTER YEAR ================= */
+const yearEl = document.getElementById("year");
+if (yearEl) yearEl.textContent = new Date().getFullYear();

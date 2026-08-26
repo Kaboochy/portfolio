@@ -4,104 +4,148 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kaboochy — Game Developer Portfolio</title>
+  <meta name="description" content="Victor de Souza (Kaboochy) — Game Developer portfolio: Unity, Unreal Engine, and XNA projects." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <!-- Top HUD / header -->
+  <!-- Cursor-following mascot (fixed overlay, whole page) -->
+  <div id="dino" class="dino" aria-hidden="true"></div>
+
+  <!-- Header / Nav -->
   <header class="topbar">
     <div class="brand">
       <div class="dot"></div>
       <div>
-        <div class="name">Kaboochy</div>
-        <div class="tag">Game Developer • Portfolio as a Game</div>
+        <div class="name">KABOOCHY</div>
+        <div class="tag">Game Developer</div>
       </div>
     </div>
 
     <nav class="nav">
-      <button id="btnAbout" class="btn">About / Skills</button>
-      <a class="btn btnGhost" href="https://github.com/Kaboochy" target="_blank" rel="noreferrer">GitHub</a>
-      <a class="btn btnGhost" href="https://www.linkedin.com/in/kaboochy" target="_blank" rel="noreferrer">LinkedIn</a>
-      <a class="btn btnGhost" href="https://kaboochy.itch.io/" target="_blank" rel="noreferrer">itch.io</a>
-      <a class="btn btnGhost" href="https://drive.google.com/file/d/1_MP8A6NdU6mBNw7RdmmlAmRurCcfSqaQ/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a>
+      <a class="navlink" href="#about">About</a>
+      <a class="navlink" href="#skills">Skills</a>
+      <a class="navlink" href="#experience">Experience</a>
+      <a class="navlink" href="#projects">Projects</a>
+      <a class="navlink" href="#contact">Contact</a>
+      <a class="btn btnAccent" href="https://drive.google.com/file/d/1_MP8A6NdU6mBNw7RdmmlAmRurCcfSqaQ/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a>
     </nav>
   </header>
 
-  <!-- Game container -->
-  <main class="wrap">
-    <section class="gameShell">
-      <!-- This is the “game screen” -->
-      <div id="game" class="game" aria-label="Portfolio game area">
-        <!-- World layer -->
-        <div id="world" class="world">
-          <!-- Player is a sprite div -->
-          <div id="player" class="player" aria-label="Player character"></div>
-
-          <!-- Project stations are created by JS (but we include a fallback message) -->
-          <noscript class="noscript">
-            This site is interactive and needs JavaScript enabled.
-          </noscript>
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="heroInner">
+        <p class="eyebrow">Hi, I'm Victor — a.k.a.</p>
+        <h1 class="heroTitle">KABOOCHY</h1>
+        <p class="heroSubtitle">
+          Game Developer crafting responsive, story-driven, and polished play experiences
+          with Unity, Unreal Engine, and XNA.
+        </p>
+        <div class="heroActions">
+          <a class="btn btnAccent btnBig" href="#projects">View Projects</a>
+          <a class="btn btnGhost btnBig" href="#contact">Get in Touch</a>
         </div>
-
-        <!-- On-screen hint -->
-        <div class="hint" id="hint">
-          Walk with <b>WASD</b>. Approach a project and press <b>E</b> to open.
+        <div class="heroLinks">
+          <a href="https://github.com/Kaboochy" target="_blank" rel="noreferrer">GitHub</a>
+          <span>·</span>
+          <a href="https://www.linkedin.com/in/kaboochy" target="_blank" rel="noreferrer">LinkedIn</a>
+          <span>·</span>
+          <a href="https://kaboochy.itch.io/" target="_blank" rel="noreferrer">itch.io</a>
         </div>
       </div>
+    </section>
 
-      <!-- About backdrop (NEW) -->
-      <div class="panelBackdrop" id="aboutBackdrop" aria-hidden="true"></div>
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <h2 class="sectionTitle">About Me</h2>
+      <div class="aboutGrid">
+        <p class="aboutText">
+          Hi! I'm <b>Kaboochy</b>, a game developer who loves building games that feel responsive,
+          enjoyable, and user-friendly. I'm always on the lookout for <b>internships</b> in
+          gameplay, tools, or general engineering as I continue to work on my own projects and games.
+        </p>
+      </div>
+    </section>
 
-      <!-- About panel -->
-      <aside class="panel" id="aboutPanel" aria-label="About panel">
-        <div class="panelHeader">
-          <div>
-            <h2>About Me</h2>
-            <p class="muted">Quick summary of my portfolio</p>
-          </div>
-          <button class="btnSmall" id="btnCloseAbout" aria-label="Close about panel">✕</button>
-        </div>
+    <!-- SKILLS -->
+    <section id="skills" class="section">
+      <h2 class="sectionTitle">Skills</h2>
+      <ul class="chips chipsLarge">
+        <li>Unity / C#</li>
+        <li>Unreal Engine / Blueprints</li>
+        <li>Story Telling</li>
+        <li>Physics + Movement</li>
+        <li>Animation Systems</li>
+        <li>Blender / Maya</li>
+        <li>Git / GitHub</li>
+        <li>UI / UX</li>
+      </ul>
+    </section>
 
-        <div class="panelBody">
-          <p>
-            Hi! I’m <b>Kaboochy</b>, a game developer who loves building games that feel responsive,
-            enjoyable, and user-friendly. I’m always on the lookout for <b>internships</b> in
-            gameplay, tools, or general engineering as I continue to work on my own projects/games.
-          </p>
-
-          <h3>Skills</h3>
-          <ul class="chips">
-            <li>Unity / C#</li>
-            <li>Story Telling</li>
-            <li>Physics + Movement</li>
-            <li>Animation Systems</li>
-            <li>Git / GitHub</li>
-            <li>UI / UX</li>
-          </ul>
-
-          <h3>Experience</h3>
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section">
+      <h2 class="sectionTitle">Experience</h2>
+      <div class="timeline">
+        <div class="timelineItem">
+          <div class="timelineDot"></div>
           <div class="card">
-            <div class="cardTitle"> Creative Director / School Project </div>
-            <div class="cardMeta">2022–2023</div>
+            <div class="cardTitle">Creative Director — School Project</div>
+            <div class="cardMeta">2022 – 2023</div>
             <ul>
               <li>Modeled 3D assets in Blender</li>
-              <li>Designed many levels and gameplay loop</li>
+              <li>Designed many levels and the core gameplay loop</li>
               <li>Wrote an elaborate and cohesive narrative</li>
               <li>Organized documentation and reviewed agile sprints</li>
-              <li>Collaborated using Git branches + pull requests.</li>
-              <li>Shipped a playable demo and gathered feedback for iteration.</li>
+              <li>Collaborated using Git branches + pull requests</li>
+              <li>Shipped a playable demo and gathered feedback for iteration</li>
             </ul>
           </div>
-
-          <h3>How this portfolio works</h3>
-          <p class="muted">
-            Walk Vee the dinosaur to stations to open project pop-ups. Each pop-up has a short description,
-            what I personally did, tech used, and links.
-          </p>
         </div>
-      </aside>
+
+        <div class="timelineItem">
+          <div class="timelineDot"></div>
+          <div class="card cardPlaceholder">
+            <div class="cardTitle">Role / Organization</div>
+            <div class="cardMeta">Dates</div>
+            <ul>
+              <li>Add details about this experience here.</li>
+              <li>What you did, tools used, and outcomes.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <h2 class="sectionTitle">Projects</h2>
+      <div class="projectsGrid" id="projectsGrid"></div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <h2 class="sectionTitle">Contact</h2>
+      <p class="aboutText">
+        Interested in working together, or just want to say hi? Reach out — I'd love to hear from you.
+      </p>
+      <div class="contactActions">
+        <a class="btn btnAccent btnBig" href="mailto:victorbdesouza@outlook.com">Email Me</a>
+        <a class="btn btnGhost btnBig" href="https://www.linkedin.com/in/kaboochy" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a class="btn btnGhost btnBig" href="https://github.com/Kaboochy" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn btnGhost btnBig" href="https://kaboochy.itch.io/" target="_blank" rel="noreferrer">itch.io</a>
+      </div>
     </section>
   </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Victor de Souza — Kaboochy</p>
+  </footer>
 
   <!-- Project Modal -->
   <div class="modalBackdrop" id="modalBackdrop" aria-hidden="true">
@@ -141,7 +185,6 @@
     </div>
   </div>
 
-  <div id="version"></div>
   <script src="game.js"></script>
 </body>
 </html>
