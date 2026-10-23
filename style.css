@@ -169,6 +169,15 @@ body{
   margin: 0;
 }
 
+.eyebrowSub{
+  color: var(--muted, var(--text));
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: -10px 0 0;
+  opacity: .75;
+}
+
 .heroTitle{
   font-family: var(--font-pixel);
   font-size: clamp(26px, 6vw, 48px);
